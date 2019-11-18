@@ -6,7 +6,7 @@ The Data Table Bundle allows to create tables based on Doctrines Query Builders 
 Via Composer directly
 
 ```bash
-php composer.phar require pec-platform/datatable-bundle dev-develop
+php composer.phar require stinger-soft/datatable-bundle dev-develop
 ```
 
 or add the following to your composer.json
@@ -14,14 +14,14 @@ or add the following to your composer.json
 ```json
 {
     "require": {
-        "pec-platform/datatable-bundle": "dev-develop"
+        "stinger-soft/datatable-bundle": "dev-develop"
     }
 }
 ```
 
 ### Download the newly added bundle
 ```bash
-php composer.phar update pec-platform/datatable-bundle
+php composer.phar update stinger-soft/datatable-bundle
 ```
 
 ### Register the bundle in your AppKernel.php
