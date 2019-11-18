@@ -1,0 +1,19 @@
+stinger_soft_datatable_demo:
+    path: /
+    defaults: { _controller: 'StingerSoftDatatableBundle:Demo:index' }
+
+stinger_soft_datatable_demo_server:
+    path: /server.html
+    defaults: { _controller: 'StingerSoftDatatableBundle:Demo:indexServerSide' }
+
+stinger_soft_datatable_demo_client:
+    path: /client.html
+    defaults: { _controller: 'StingerSoftDatatableBundle:Demo:indexClientSide' }
+
+stinger_soft_datatable_demo_mixed:
+    path: /mixed.html
+    defaults: { _controller: 'StingerSoftDatatableBundle:Demo:indexMixed' }
+
+stinger_soft_datatable_demo_dom:
+    path: /dom.html
+    defaults: { _controller: 'StingerSoftDatatableBundle:Demo:indexDom' }

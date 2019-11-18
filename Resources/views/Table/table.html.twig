@@ -1,0 +1,118 @@
+{% import 'StingerSoftDatatableBundle:Table:macros.html.twig' as me %}
+
+{% set filterableColumns = table.getFilterableColumns() %}
+{% if table.vars.filter_external and table.hasFilterableColumns() %}
+	{% block datatable_filter_external %}
+		<div id="{{ table.vars.id }}_filter_container">
+			{% for index, column in filterableColumns %}
+				{% include 'StingerSoftDatatableBundle:Filter:external_container.html.twig' with {'columnIndex' : index, 'filter_container_id': column.filter.vars.filter_container_id } %}
+			{% endfor %}
+		</div>
+	{% endblock datatable_filter_external %}
+{% endif %}
+
+{% block datatable_before %}
+	<div class="row">
+		{% block datatable_before_left %}
+			<div class="col-md-6 form-inline">
+				{% block datatable_before_left_content %}
+					{{ me.search(table) }}
+					{{ me.pageLength(table) }}
+				{% endblock datatable_before_left_content %}
+			</div>
+		{% endblock datatable_before_left %}
+		{% block datatable_before_right %}
+			<div class="col-md-6 form-inline">
+				{% block datatable_before_right_content %}
+					{% block datatable_before_right_toolbar %}
+						<div class="btn-toolbar table-tools pull-right">
+							{% block datatable_before_right_toolbar_additional_buttons %}
+							{% endblock datatable_before_right_toolbar_additional_buttons %}
+							{% block datatable_before_right_toolbar_default_buttons %}
+								{{ me.clearButton(table) }}
+								{{ me.reloadButton(table) }}
+								{{ me.columnSelector(table) }}
+							{% endblock datatable_before_right_toolbar_default_buttons %}
+						</div>
+					{% endblock datatable_before_right_toolbar %}
+				{% endblock datatable_before_right_content %}
+			</div>
+		{% endblock datatable_before_right %}
+	</div>
+{% endblock datatable_before %}
+{% if table.vars.dom_based is not defined or not table.vars.dom_based %}
+{% set headerSortingClass = table.vars.sort_on_header_label ? 'label-triggers-sorting' : 'header-triggers-sorting' %}
+<table {{ me.attributes(table.vars.attr, table.vars.translation_domain) }}>
+	<thead>
+	<tr>
+		{%- for column in table.columns -%}{% spaceless %}
+			{% set filterable = column in filterableColumns %}
+			<th class="{% if filterable %}filterable{% endif %} {{ headerSortingClass }}">
+				<span class="column-header-title">
+					{% set label = column.vars.label %}
+					{% set abbreviation = column.vars.abbreviation_label %}
+					{% set labelIsTranslatable = column.vars.label is not same as(null) %}
+					{% if column.vars.label is empty and column.vars.label is not same as(null) %}
+						{% set label = column.path|replace({'.': '_'})|humanize %}
+						{% set labelIsTranslatable = false %}
+					{% endif %}
+
+					{% set translated_label = label %}
+					{% if column.vars.translation_domain is not same as(false) and labelIsTranslatable %}
+						{% set translated_label = label|trans({}, column.vars.translation_domain) %}
+					{% endif %}
+
+					{% set tooltip = column.vars.tooltip_label %}
+					{% set translated_tooltip = tooltip %}
+					{% if tooltip is not empty %}
+						{% set translated_tooltip = tooltip %}
+						{% if column.vars.tooltip_translation_domain is same as(true) %}
+							{% set translated_tooltip = tooltip|trans({}, column.vars.translation_domain) %}
+						{% elseif column.vars.tooltip_translation_domain is not same as(false) %}
+							{% set translated_tooltip = tooltip|trans({}, column.vars.tooltip_translation_domain) %}
+						{% endif %}
+					{% endif %}
+
+					{% set translated_abbreviation = abbreviation %}
+					{% if abbreviation is not empty %}
+						{% if column.vars.abbreviation_translation_domain is same as(true) %}
+							{% set translated_abbreviation = abbreviation|trans({}, column.vars.translation_domain) %}
+						{% elseif column.vars.abbreviation_translation_domain is not same as(false) %}
+							{% set translated_abbreviation = abbreviation|trans({}, column.vars.abbreviation_translation_domain) %}
+						{% endif %}
+					{% endif %}
+
+					{% if translated_abbreviation is not empty or translated_tooltip is not empty %}
+						{% set finalTooltip = translated_tooltip is not empty ? translated_tooltip : translated_label %}
+						{% set finalLabel = translated_abbreviation is not empty ? translated_abbreviation : translated_label %}
+						<abbr title="{{ finalTooltip|raw }}"
+							  data-toggle="tooltip">{{ finalLabel|raw }}</abbr>
+					{% else %}
+						{{ translated_label|raw }}
+					{% endif %}
+					{% if table.vars.filter_external and filterable %}
+						<a href='javascript:void(0);' class="datatable-filter-popup-trigger"
+						   data-column="{{ loop.index0 }}"
+						   data-target="#{{ column.filter.vars.filter_container_id }}_container"
+						   data-highlight="{{ column.filter.vars.highlight_mode == constant('\\Pec\\Bundle\\DatatableBundle\\Filter\\FilterTypeInterface::HIGHLIGHT_MODE_AUTO') ? 'true' : 'false' }}"
+						   data-auto-focus="{{ column.filter.vars.auto_focus ? 'true' : 'false' }}"
+						   data-popover-options='{"url": "#{{ column.filter.vars.filter_container_id }}_container", "title": {{ translated_label|json_encode|raw }}, "animation": "pop", "placement": "auto-top", "closeable": true, "style": "{{ column.filter.vars.filter_container_class }}" }'>
+						<i class="fa fa-filter column-filter"></i>
+					</a>
+					{% endif %}
+					{% if column.vars.orderable %}
+						<span class="sort-indicator"></span>
+					{% endif %}
+				</span>
+			</th>
+		{% endspaceless %}{%- endfor -%}
+	</tr>
+	</thead>
+</table>
+{% endif %}
+{% block datatable_after %}
+	{% block datatable_after_left %}
+	{% endblock datatable_after_left %}
+	{% block datatable_after_right %}
+	{% endblock datatable_after_right %}
+{% endblock datatable_after %}

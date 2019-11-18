@@ -1,0 +1,9 @@
+{% extends 'StingerSoftDatatableBundle:Column:column.js.twig' %}
+{% block render_object_when_not_null %}
+	if(typeof moment !== "undefined") {
+		renderedData = moment(renderedData.date).format({{ column.vars.date_format|json_encode|raw }});
+	} else {
+		console.log('Please add moment.js to support the formatting of dates!');
+		renderedData = renderedData.date;
+	}
+{% endblock %}

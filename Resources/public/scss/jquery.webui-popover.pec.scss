@@ -1,0 +1,21 @@
+.webui-popover {
+
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 0;
+	z-index: 11000;
+
+	-webkit-box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
+	box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
+
+	.webui-popover-title {
+		font-size: 13px;
+		background-color: #f7f7f7;
+		border-radius: 0;
+	}
+
+	.webui-popover-inner {
+		.close {
+			margin: 12px 10px 0 0;
+		}
+	}
+}

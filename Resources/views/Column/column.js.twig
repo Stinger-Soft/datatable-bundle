@@ -1,0 +1,64 @@
+{
+{%- block data -%}{% spaceless %}
+	"name": {{ column.path|json_encode|raw }},
+	"data": {{ column.path|json_encode|raw }},
+	{% set searchable = column.vars.searchable or column.vars.filterable %}
+	"searchable": {{ searchable|json_encode|raw }},
+	"orderable": {{ column.vars.orderable|json_encode|raw }},
+	{% if column.vars.orderSequence is not same as(null) %}
+	"orderSequence": {{ column.vars.orderSequence|json_encode|raw }},
+	{% endif %}
+	{% if column.vars.width is not same as (null)%}
+	"width": {{ column.vars.width|json_encode|raw }},
+	{% endif %}
+	"className": {{ column.vars.class_name|json_encode|raw }},
+	"visible": {{ column.vars.visible|json_encode|raw }},
+	{% block additional_data %}{% endblock %}
+	{%- block render_function -%}{% spaceless %}
+	"render": function ( data, type, row, meta ) {
+		var renderedData = data.display;
+		if(void 0 !== data.sort && type === 'sort') {
+			var sortData = data.sort;
+			{%- block sort_body -%}{% spaceless %}
+			{%- block sort_object_before -%}{%- endblock -%}
+			{%- block sort_default_value -%}{%- endblock -%}
+			{%- block sort_object_when_not_null -%}{%- endblock -%}
+			{%- block sort_object_after -%}{%- endblock -%}
+			return sortData;
+			{% endspaceless %}{%- endblock sort_body -%}
+		}
+		if(void 0 !== data.filter && type === 'filter') {
+			var filterData = data.filter;
+			{%- block filter_body -%}{% spaceless %}
+			{%- block filter_object_before -%}{%- endblock -%}
+			{%- block filter_default_value -%}{%- endblock -%}
+			{%- block filter_object_when_not_null -%}{%- endblock -%}
+            {%- block filter_object_html_number -%}
+			if(typeof filterData == 'number' && meta.settings.aoColumns[meta.col].sType == 'html') {
+				filterData = filterData.toString();
+			}
+			{%- endblock filter_object_html_number -%}
+			{%- block filter_object_after -%}{%- endblock -%}
+			return filterData;
+			{% endspaceless %}{%- endblock filter_body -%}
+		}
+		{%- block render_body -%}{% spaceless %}
+			{%- block render_object_before -%}{%- endblock -%}
+			{%- block default_value -%}{% spaceless %}
+				if(renderedData == null) {
+					return {{ column.vars.empty_value|json_encode|raw }};
+				}
+			{% endspaceless %}{%- endblock -%}
+			{%- block render_object_when_not_null -%}{%- endblock -%}
+			{%- block render_object_after -%}{%- endblock -%}
+			var initOptions = meta.settings.oInit;
+			if(initOptions.pec && initOptions.pec.scrollerWrapperClass) {
+				return '<div class="' + initOptions.pec.scrollerWrapperClass + '">' + renderedData + '</div>';
+			} else {
+				return renderedData;
+			}
+		{% endspaceless %}{%- endblock render_body -%}
+	}
+	{% endspaceless %}{%- endblock render_function -%}
+{% endspaceless %}{%- endblock data -%}
+}

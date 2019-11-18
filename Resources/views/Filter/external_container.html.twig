@@ -1,0 +1,20 @@
+{% trans_default_domain 'StingerSoftDatatableBundle' %}
+<div id="{{ filter_container_id }}_container" class="filter_container clearfix" data-column="{{ columnIndex }}" style="position: absolute; left: -10000px; width: 250px">
+	<div id="{{ filter_container_id }}"></div>
+	<div class="btn-toolbar pull-right" style="margin-top: 5px">
+		<div class="btn-group">
+			<a class="btn btn-primary datatable-filter-apply"
+			   data-column="{{ columnIndex }}" title="{{ 'stinger_soft_datatables.filter.apply'|trans }}"
+			   data-toggle="tooltip" data-container="#{{ filter_container_id }}_container">
+				<i class="fa fa-check"></i>
+			</a>
+		</div>
+		<div class="btn-group">
+			<a class="btn btn-default datatable-filter-clear"
+			   data-column="{{ columnIndex }}" title="{{ 'stinger_soft_datatables.filter.reset'|trans }}"
+			   data-toggle="tooltip" data-container="#{{ filter_container_id }}_container">
+				<i class="far fa-trash-alt"></i>
+			</a>
+		</div>
+	</div>
+</div>

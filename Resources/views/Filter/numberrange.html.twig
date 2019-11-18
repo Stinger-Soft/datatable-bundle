@@ -1,0 +1,8 @@
+{% if table.tableId is defined %}
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery('.yadcf-filter-number, .yadcf-filter-range-number').addClass('form-control').attr('type', 'number');
+			jQuery('.yadcf-filter-range-number-seperator').text(' - ');
+		});
+	</script>
+{% endif %}

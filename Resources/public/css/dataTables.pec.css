@@ -1,0 +1,35 @@
+/*
+table.dataTable .column-selector select {
+	width: 100%;
+}
+
+.datatable-column-toggler .dropdown-menu label {
+	cursor: pointer;
+}
+
+.datatable-column-toggler .dropdown-menu hr {
+	margin: 10px -5px 7px -5px;
+}*/
+
+table.dataTable tr.filtering td,
+table.dataTable tr.filtering th {
+	padding: 2px;
+}
+
+.columnSelectorLabel {
+	cursor: pointer;
+}
+
+.columnSelectorSpanLabel {
+	float: left;
+	margin-left: 2px;
+}
+
+.columnSelectorSpanControl {
+	float: left;	
+}
+
+.columnSelectorResetDivider {
+	float: left;
+	width: 100%;
+}

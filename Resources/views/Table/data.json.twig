@@ -1,0 +1,10 @@
+{% if serverSide %}
+{
+	"drawId": {{ drawId|json_encode|raw }},
+	"recordsTotal":{{ recordsTotal|json_encode|raw }},
+	"recordsFiltered":{{ recordsFiltered|json_encode|raw }},
+	"data": {{ data|json_encode|raw }}
+}
+{% else %}
+{{ data|json_encode|raw }}
+{% endif %}

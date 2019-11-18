@@ -1,0 +1,21 @@
+<div class="progress" title="{{ progress }}%">
+	{% set cssClass = ['progress-bar'] %}
+	{% if striped %}
+		{% set cssClass = cssClass|merge(['progress-bar-striped']) %}
+	{% endif %}
+	{% if animated %}
+		{% set cssClass = cssClass|merge(['active']) %}
+	{% endif %}
+	{% if additionalClasses %}
+		{% set cssClass = cssClass|merge([additionalClasses]) %}
+	{% endif %}
+	<div class="{{ cssClass|join(' ') }}" role="progressbar"
+		 aria-valuenow="{{ progress }}" aria-valuemin="{{ min }}" aria-valuemax="{{ max }}"
+		 style="width: {{ progress }}%;">
+		{% if showProgress %}
+			{{ progress }}%
+		{% else %}
+			<span class="sr-only">{{ progress }}%</span>
+		{% endif %}
+	</div>
+</div>

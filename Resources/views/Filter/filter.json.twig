@@ -1,0 +1,63 @@
+{
+	"column_number": {{ columnIndex|json_encode|raw }},
+	{% block additional_fields %}{% endblock additional_fields %}
+	{% if filter.vars.filter_default_label %}
+		{% if filter.vars.filter_default_label is iterable %}
+			{% set placeholders = [] %}
+			{% for item in filter.vars.filter_default_label %}
+				{% set placeholders = placeholders|merge([((item|trans({}, filter.vars.translation_domain )))]) %}
+			{% endfor %}
+			"filter_default_label":  {{ placeholders|json_encode|raw }},
+		{% else %}
+			{% set placeholder = filter.vars.translation_domain is same as(false) ? filter.vars.filter_default_label : (filter.vars.filter_default_label|trans({}, filter.vars.translation_domain ))%}
+			"filter_default_label": {{ placeholder|json_encode|raw }},
+		{% endif %}
+	{% endif %}
+	{% if filter.vars.filter_reset_button_text is not same as(null) %}
+	{% set resetLabel = filter.vars.translation_domain is not same as(false) and filter.vars.filter_reset_button_text is not same as(false) ? (filter.vars.filter_reset_button_text|trans({}, filter.vars.translation_domain )) : filter.vars.filter_reset_button_text %}
+	"filter_reset_button_text": {{ resetLabel|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.filter_container_selector is not same as(null) %}
+	"filter_container_selector": {{ filter.vars.filter_container_selector|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.filter_container_id is not same as(null) %}
+	"filter_container_id": {{ filter.vars.filter_container_id|json_encode|raw }},
+	{% endif %}
+	{% block filter_plugin_options %}
+	{% if filter.vars.filter_plugin_options is not same as(null) %}
+	"filter_plugin_options": {{ filter.vars.filter_plugin_options|json_encode|raw }},
+	{% endif %}
+	{% endblock %}
+	{% if filter.vars.column_data_type is not same as(null) %}
+	"column_data_type": {{ filter.vars.column_data_type|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.text_data_delimiter is not same as(null) %}
+	"text_data_delimiter": {{ filter.vars.text_data_delimiter|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.html_data_type is not same as(null) and filter.vars.column_data_type == 'html' %}
+	"html_data_type": {{ filter.vars.html_data_type|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.html_data_type == 'selector' %}
+	"html_data_selector": {{ filter.vars.html_data_selector|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.html5_data is not same as(null)%}
+	"html5_data": {{ filter.vars.html5_data|json_encode|raw }},
+	{% endif %}
+	"sort_as": {{ filter.vars.sort_as|json_encode|raw }},
+	{% if filter.vars.sort_as_custom_func is not same as(null)%}
+	"sort_as_custom_func": {{ filter.vars.sort_as_custom_func|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.sort_order is not same as(null)%}
+	"sort_order": {{ filter.vars.sort_order|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.filter_match_mode is not same as(null)%}
+	"filter_match_mode": {{ filter.vars.filter_match_mode|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.reset_button_style_class is not same as(null)%}
+	"reset_button_style_class": {{ filter.vars.reset_button_style_class|json_encode|raw }},
+	{% endif %}
+	{% if filter.vars.pre_filtered_value is not same as(null) %}
+	"pre_filtered_value":  {{ filter.vars.pre_filtered_value|json_encode|raw }},
+	{% endif %}
+	"filter_type": {{ filter.vars.type|json_encode|raw }}
+}

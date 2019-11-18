@@ -1,0 +1,51 @@
+stinger_soft_datatables:
+  all: Alle
+  emptyTable: Keine Daten in der Tabelle vorhanden
+  info: '%start% bis %end% von %total% Einträgen'
+  infoEmpty: 0 bis 0 von 0 Einträgen
+  infoFiltered: '(gefiltert von %max% Einträgen)'
+  infoPostFix: ''
+  thousands: '.'
+  lengthMenu: '%menu% Einträge anzeigen'
+  loadingRecords: Wird geladen...
+  processing: Bitte warten...
+  search: 'Suchen: '
+  search_placeholder: 'Suchen...'
+  zeroRecords: Keine Einträge vorhanden.
+  pageLength:
+    all: Alle
+  paginate:
+    first: Erste
+    last: Letzte
+    next: Nächste
+    previous: Zurück
+  aria:
+    sortAscending: ': aktivieren, um Spalte aufsteigend zu sortieren'
+    sortDescending: ': aktivieren, um Spalte absteigend zu sortieren'
+  filter:
+    reset: Filter zurücksetzen
+    apply: Filter anwenden
+    placeholder:
+      select: Bitte wählen Sie einen Wert aus
+      select_multiple: Bitte wählen Sie Werte aus
+      input: Bitte geben Sie einen Wert ein
+      select_value: Wert auswählen
+      select_values: Werte auswählen
+      type_to_filter: Tippen um zu suchen
+      from: Von
+      to: Bis
+      select_date: Bitte wählen Sie ein Datum aus 
+  reload: Erneut laden
+  details:
+    collapsed: Details einblenden
+    expanded: Details ausblenden
+  columns:
+    label: Spalten
+    reset: Standard wiederherstellen
+    check:
+      all: Alle auswählen
+      none: Keine auswählen
+  column_types:
+    yes_no:
+      yes: Ja
+      no: Nein

@@ -1,0 +1,47 @@
+parameters:
+  stinger_soft_datatable.datatable_service.class: 'StingerSoft\DatatableBundle\Service\DatatableService'
+
+  stinger_soft_datatable.twig_extension.class: 'StingerSoft\DatatableBundle\Service\DatatableExtension'
+  stinger_soft_datatable.twig.table_template_html: 'StingerSoftDatatableBundle:Table:table.html.twig'
+  stinger_soft_datatable.twig.table_template_js: 'StingerSoftDatatableBundle:Table:table.js.twig'
+  stinger_soft_datatable.extension.class: 'StingerSoft\DatatableBundle\Extension\DependencyInjection\DependencyInjectionExtension'
+
+  
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  StingerSoft\DatatableBundle\Extension\DependencyInjection\DependencyInjectionExtension:
+    alias: 'stinger_soft_datatable.extension'
+
+  stinger_soft_datatable.extension:
+    class: '%stinger_soft_datatable.extension.class%'
+
+  StingerSoft\DatatableBundle\Table\:
+    resource: '../../Table'
+
+  StingerSoft\DatatableBundle\Column\:
+    resource: '../../Column'
+
+  StingerSoft\DatatableBundle\Filter\:
+    resource: '../../Filter'
+
+  StingerSoft\DatatableBundle\Transformer\:
+    resource: '../../Transformer'
+
+  stinger_soft_datatable.datatable_service:
+    class: '%stinger_soft_datatable.datatable_service.class%'
+
+  StingerSoft\DatatableBundle\Service\DatatableService:
+    alias: stinger_soft_datatable.datatable_service
+
+    
+  stinger_soft_datatable.twig_extension:
+    class: '%stinger_soft_datatable.twig_extension.class%'
+    tags: 
+      - { name: "twig.extension" }
+    arguments:
+      - '@twig'
+      - '%stinger_soft_datatable.twig.table_template_html%'
+      - '%stinger_soft_datatable.twig.table_template_js%'

@@ -1,0 +1,9 @@
+{% extends 'StingerSoftDatatableBundle:Filter:filter.json.twig' %}
+{% block filter_plugin_options %}
+{% if filter.vars.filter_plugin_options is not same as(null) and table.vars.filter_external is same as(true) %}
+"filter_plugin_options": {{ filter.vars.filter_plugin_options|merge({'container': '#' ~ table.vars.id ~ '_filter_container'})|json_encode|raw }},
+{% endif %}
+{% if filter.vars.date_format is not same as(null) %}
+"date_format": {{ filter.vars.date_format|json_encode|raw }},
+{% endif %}
+{% endblock filter_plugin_options %}

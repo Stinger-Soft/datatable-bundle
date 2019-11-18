@@ -1,0 +1,13 @@
+{% extends 'StingerSoftDatatableBundle:Filter:autocomplete.json.twig' %}
+{% block additional_fields %}
+{{ parent() }}
+{% if filter.vars.select_type is not same as(null) %}
+	"select_type": {{ filter.vars.select_type|json_encode|raw }},
+{% endif %}
+{% if filter.vars.style_class is not same as(null) %}
+	"style_class": {{ filter.vars.style_class|json_encode|raw }},
+{% endif %}
+{% if filter.vars.select_type_options is not same as(null) %}
+	"select_type_options": {{ filter.vars.select_type_options|json_encode|raw }},
+{% endif %}
+{% endblock additional_fields %}

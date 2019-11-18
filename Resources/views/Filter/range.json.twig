@@ -1,0 +1,9 @@
+{% extends 'StingerSoftDatatableBundle:Filter:text.json.twig' %}
+{% block additional_fields %}
+{% if filter.vars.data is not same as(null) and filter.vars.data is not same as(false) and filter.vars.data is not same as(true) %}
+"data": {{ filter.vars.data|json_encode|raw }},
+{% endif %}
+{% if filter.vars.style_class is not same as(null) %}
+"style_class": {{ filter.vars.style_class|json_encode|raw }},
+{% endif %}
+{% endblock additional_fields %}

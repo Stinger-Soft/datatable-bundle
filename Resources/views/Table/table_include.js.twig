@@ -1,0 +1,161 @@
+{% set jQueryDataTableVarName = table.vars.id|replace({'-': '_'}) %}
+var jQueryDataTable_{{ jQueryDataTableVarName }};
+jQuery(document).ready(function() {
+	{% block datatable_js_before %}{% endblock datatable_js_before %}
+
+	var jsTable = new StingerSoftJQueryDataTable('{{ table.vars.id }}');
+
+	{% set columnDetailTriggers = [] %}
+	{%- for column in table.columns -%}
+	{% if column.vars.details_trigger_selector is defined %}
+	{% set columnDetailTriggers = columnDetailTriggers|merge([column.vars.details_trigger_selector]) %}
+	{% endif %}
+	{%- endfor -%}
+	var columnDetailTriggers = {{ columnDetailTriggers|json_encode|raw }};
+
+	{% set foreignFormSelectId = false %}
+	{%- for column in table.columns -%}
+	{% if column.vars.form_id is defined and foreignFormSelectId is same as(false) %}
+	{% set foreignFormSelectId = column.vars.form_id %}
+	{% endif %}
+	{%- endfor -%}
+	var foreignFormSelectId = {{ foreignFormSelectId|json_encode|raw }};
+
+	var filterableColumns = [];
+	var filterSettings = {
+		{% if table.vars.filter_requesturl_column_key is not same as (null) %}
+		"filterRequestUrlColumnKey": {{ table.vars.filter_requesturl_column_key|json_encode|raw }},
+		{% endif %}
+		{% if table.vars.filter_requesturl_value_key is not same as (null) %}
+		"filterRequestUrlValueKey": {{ table.vars.filter_requesturl_value_key|json_encode|raw }},
+		{% endif %}
+	};
+	{%- if table.hasFilterableColumns() -%}
+	filterableColumns = [
+		{%- for index, column in table.getFilterableColumns() -%}{% spaceless %}
+		{% include column.filter.jsTemplate with {'columnIndex' : index, 'filter': column.filter } %}{% if not loop.last %},{% endif %}
+		{% endspaceless %}{%- endfor -%}
+	];
+	{% if table.vars.filter_external %}
+	filterSettings = jQuery.extend(filterSettings, {
+		externally_triggered: true,
+		onInitComplete: function() {
+			setTimeout(function() {
+				jsTable.$table.closest('.dataTables_scroll').find('a.datatable-filter-popup-trigger').each(function() {
+					jsTable.highlightColumnFilter(jQuery(this));
+				});
+			}, 100);
+		}
+	});
+	{% endif %}
+	{% endif %}
+
+	var options = {
+		"domBased": {{ table.vars.dom_based is defined and table.vars.dom_based ? 'true' : 'false' }},
+		"detailsTriggerSelector": columnDetailTriggers,
+		"foreignFormSelectInputId": foreignFormSelectId,
+		"eventsNamespace": {{ table.vars.events_namespace|json_encode|raw }},
+		{% if table.vars.state_save_key is not same as (null) %}
+		"stateSaveKey": {{ table.vars.state_save_key|json_encode|raw }},
+			{% if table.vars.search_state_save_key is not same as (null) %}
+			"searchStateSaveKey": {{ table.vars.search_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.filter_state_save_key is not same as (null) %}
+			"filterStateSaveKey": {{ table.vars.filter_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.page_length_state_save_key is not same as (null) %}
+			"pageLengthStateSaveKey": {{ table.vars.page_length_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.start_state_save_key is not same as (null) %}
+			"startStateSaveKey": {{ table.vars.start_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.order_state_save_key is not same as (null) %}
+			"orderStateSaveKey": {{ table.vars.order_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.visibility_state_save_key is not same as (null) %}
+			"visibilityStateSaveKey": {{ table.vars.visibility_state_save_key|json_encode|raw }},
+			{% endif %}
+			{% if table.vars.scroller_state_save_key is not same as (null) %}
+			"scrollerStateSaveKey": {{ table.vars.scroller_state_save_key|json_encode|raw }},
+			{% endif %}
+		{% endif %}
+		"versionHash": {{ table.vars.version_hash|json_encode|raw }},
+		"sortOnHeaderLabel": {{ table.vars.sort_on_header_label|json_encode|raw }},
+		"footerToolContainerSelector": {{ table.vars.footer_tool_container_selector|json_encode|raw }},
+		"searchDelay": {{ table.vars.search_delay|json_encode|raw }}
+	};
+
+	var dataTableOptions = {
+		"pec": {
+			{% if table.vars.scrollerWrapperClass is defined and table.vars.scrollerWrapperClass is not same as(null) %}
+			"scrollerWrapperClass": {{ table.vars.scrollerWrapperClass|json_encode|raw }},
+			{% endif %}
+		},
+		{% if table.vars.dom %}
+		"dom": {{ table.vars.dom|json_encode|raw }},
+		{% endif %}
+		"processing": {{ table.vars.processing|json_encode|raw }},
+		"serverSide": {{ table.vars.serverSide|json_encode|raw }},
+		"language": {
+			"url": {{ asset('bundles/pecdatatable/i18n/'~app.request.locale~'.json')|json_encode|raw }}
+		},
+		{% if table.vars.select is not same as(null) %}
+		"select": {{ table.vars.select|json_encode|raw }},
+		{% endif %}
+		{% if table.vars.serverSide %}
+		"ajax": {
+			"url": {{ table.vars.ajax_url|json_encode|raw }},
+			"type": {{ table.vars.ajax_method|json_encode|raw }}
+		},
+		{% if table.hasPrePopulatedData() %}
+		"data": {{ table.getPrePopulatedData(false)|raw }},
+		"deferLoading": {{ table.totalResults|json_encode }},
+		{% endif %}
+		{% else %}
+		{% if table.hasPrePopulatedData() %}
+		"data": {{ table.getPrePopulatedData()|raw }},
+		{% endif %}
+		{% endif %}
+		"scrollCollapse": {{ table.vars.scrollCollapse|json_encode|raw }},
+		"scrollY": {{ table.vars.scrollY|json_encode|raw }},
+		"scrollX": {{ table.vars.scrollX|json_encode|raw }},
+		"deferRender": {{ table.vars.deferRender|json_encode|raw }},
+		"scroller": {{ table.vars.scroller|json_encode|raw }},
+		"paging": {{ table.vars.paging|json_encode|raw }},
+		{% if table.vars.order is not same as(null) %}
+		"order": {{ table.vars.order|json_encode|raw }},
+		{% else %}
+		"order": [],
+		{% endif %}
+		"stateSave": {{ table.vars.stateSave|json_encode|raw }},
+		"stateDuration": {{ table.vars.stateDuration|json_encode|raw }},
+		"pagingType": {{ table.vars.pagingType|json_encode|raw }},
+		{% if table.vars.lengthMenu %}
+		"lengthMenu": {{ table.vars.lengthMenu|json_encode|raw }},
+		{% endif %}
+		{% if table.vars.pageLength %}
+		"pageLength": {{ table.vars.pageLength|json_encode|raw }},
+		{% endif %}
+		{% if table.vars.allowResize or table.vars.allowReorder %}
+		"colReorder": {
+			"allowResize": {{ table.vars.allowResize|default(false)|json_encode|raw }},
+			"allowReorder": {{ table.vars.allowReorder|default(false)|json_encode|raw }},
+		},
+		{% endif %}
+		{% if table.columns|length > 0 %}
+		"columns": [
+			{%- for column in table.columns -%}{% spaceless %}{% include column.template %}{% if not loop.last %},{% endif %}{% endspaceless %}{%- endfor -%}
+		]
+		{% endif %}
+	};
+	jQueryDataTable_{{ jQueryDataTableVarName }} = jsTable.init(options, dataTableOptions, filterableColumns, filterSettings);
+
+	{% if table.vars.allowResize or table.vars.allowReorder %}
+		new jQuery.fn.dataTable.ColReorder(jQueryDataTable_{{ jQueryDataTableVarName }}, {
+			"allowResize": {{ table.vars.allowResize|default(false)|json_encode|raw }},
+			"allowReorder": {{ table.vars.allowReorder|default(false)|json_encode|raw }},
+		});
+	{% endif %}
+
+	{% block datatable_js_after %}{% endblock datatable_js_after %}
+});

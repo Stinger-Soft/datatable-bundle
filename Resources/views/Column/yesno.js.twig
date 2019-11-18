@@ -1,0 +1,9 @@
+{% extends 'StingerSoftDatatableBundle:Column:column.js.twig' %}
+{% trans_default_domain "StingerSoftDatatableBundle" %}
+
+{% block render_object_before %}
+	{% import 'StingerSoftDatatableBundle:Column:macros.html.twig' as renderer %}
+	{% set yesState = renderer.renderYesNoState(true, column.vars) %}
+	{% set noState = renderer.renderYesNoState(false, column.vars) %}
+	renderedData = renderedData ? {{ yesState|json_encode|raw }} : {{ noState|json_encode|raw }};
+{% endblock %}

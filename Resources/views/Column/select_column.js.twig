@@ -1,0 +1,4 @@
+{% extends 'StingerSoftDatatableBundle:Column:column.js.twig' %}
+{% block additional_data %}
+	"formId": {{ column.vars.form_id|json_encode|raw }},
+{% endblock %}

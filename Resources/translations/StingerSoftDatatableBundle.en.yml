@@ -1,0 +1,51 @@
+stinger_soft_datatables:
+  all: All
+  emptyTable: No data available in table
+  info: 'Showing %start% to %end% of %total% entries'
+  infoEmpty: Showing 0 to 0 of 0 entries
+  infoFiltered: '(filtered from %max% total entries)'
+  infoPostFix: ''
+  thousands: ','
+  lengthMenu: 'Show %menu% entries'
+  loadingRecords: Loading...
+  processing: Processing...
+  search: 'Search: '
+  search_placeholder: 'Search...'
+  zeroRecords: No matching records found
+  pageLength:
+    all: All
+  paginate:
+    first: First
+    last: Last
+    next: Next
+    previous: Previous
+  aria:
+    sortAscending: ': activate to sort column ascending'
+    sortDescending: ': activate to sort column descending'
+  filter:
+    reset: Reset filter
+    apply: Apply filter
+    placeholder:
+      select: Please select a value
+      select_multiple: Please select some values
+      input: Please enter a value
+      select_value: Select a value
+      select_values: Select values
+      type_to_filter: Type to filter
+      from: From
+      to: To
+      select_date: Please select a date 
+  reload: Reload
+  details:
+    collapsed: Show details
+    expanded: Hide details
+  columns:
+    label: Columns
+    reset: Restore default
+    check:
+      all: Check all
+      none: Check none
+  column_types:
+    yes_no:
+      yes: Yes
+      no: No

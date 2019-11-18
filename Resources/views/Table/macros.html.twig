@@ -1,0 +1,147 @@
+{%- macro attributes(attr,translation_domain) -%}
+	{%- for attrname, attrvalue in attr -%}
+		{{- " " -}}
+		{%- if attrname in ['placeholder', 'title'] -%}
+			{{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+		{%- elseif attrvalue is same as(true) -%}
+			{{- attrname }}="{{ attrname }}"
+		{%- elseif attrvalue is not same as(false) -%}
+			{{- attrname }}="{{ attrvalue }}"
+		{%- endif -%}
+	{%- endfor -%}
+{%- endmacro attributes -%}
+
+{%- macro search(table) -%}
+	{% if table.vars.search_enabled %}
+		{% set placholderLabel = table.vars.search_placeholder ? table.vars.search_placeholder : 'stinger_soft_datatables.search_placeholder' %}
+		{% set translationDomain = table.vars.search_placeholder ? table.vars.translation_domain  : 'StingerSoftDatatableBundle' %}
+		{% set placeholder = translationDomain is same as(false) ? placholderLabel : placholderLabel|trans({}, translationDomain) %}
+		<input type="text" class="form-control input-sm" id="{{ table.vars.id }}_search"
+			   placeholder="{{ placeholder }}"/>
+	{% endif %}
+{%- endmacro search -%}
+
+{%- macro reloadButton(table) -%}
+	{% if table.vars.reload_enabled and table.vars.serverSide %}
+		{% set tooltipLabel = table.vars.reload_tooltip ? table.vars.reload_tooltip : 'stinger_soft_datatables.reload' %}
+		{% set translationDomain = table.vars.reload_tooltip ? table.vars.translation_domain  : 'StingerSoftDatatableBundle' %}
+		{% set tooltip = translationDomain is same as(false) ? tooltipLabel : tooltipLabel|trans({}, translationDomain) %}
+		<a href="javascript:void(0);" class="btn btn-default btn-sm btn-circle btn-icon-only"
+		   id="{{ table.vars.id }}_reload" title="{{ tooltip }}" data-toggle="tooltip">
+			<i class="fas fa-fw fa-sync"></i>
+		</a>
+	{% endif %}
+{%- endmacro reloadButton -%}
+
+{%- macro clearButton(table) -%}
+	{% if table.vars.clear_enabled %}
+		{% set tooltipLabel = table.vars.clear_tooltip ? table.vars.clear_tooltip : 'stinger_soft_datatables.filter.reset' %}
+		{% set translationDomain = table.vars.clear_tooltip ? table.vars.translation_domain  : 'StingerSoftDatatableBundle' %}
+		{% set tooltip = translationDomain is same as(false) ? tooltipLabel : tooltipLabel|trans({}, translationDomain) %}
+		<a href="javascript:void(0);" class="btn btn-default btn-sm btn-circle btn-icon-only"
+		   id="{{ table.vars.id }}_clear" title="{{ tooltip }}" data-toggle="tooltip">
+			<i class="far fa-fw fa-trash-alt"></i>
+		</a>
+	{% endif %}
+{%- endmacro clearButton -%}
+
+{%- macro columnSelector(table) -%}
+	{% import _self as me %}
+	{% if table.vars.column_selector_enabled and table.toggleableColumns and table.toggleableColumns|length > 0 %}
+		{% set tooltipLabel = table.vars.column_selector_tooltip ? table.vars.column_selector_tooltip : '' %}
+		{% set translationDomain = table.vars.column_selector_label_domain ? table.vars.column_selector_label_domain : false %}
+		{% set tooltip = translationDomain is same as(false) or not tooltipLabel ? tooltipLabel : tooltipLabel|trans({}, translationDomain) %}
+		{% set columnSelectorLabel = table.vars.column_selector_label ? table.vars.column_selector_label : '' %}
+		<div class="btn-group">
+			<a href="javascript:void(0);" class="btn btn-default btn-sm btn-circle" data-toggle="dropdown"
+			   title="{{ tooltip }}" rel="tooltip">
+				<i class="fa fa-fw fa-columns"></i> {% if translationDomain is same as(false) or not columnSelectorLabel %}{{ columnSelectorLabel }}{% else %}{{ columnSelectorLabel|trans({}, (translationDomain)) }}{% endif %}
+				<i class="fa fa-angle-down"></i>
+			</a>
+			<ul id="{{ table.vars.id }}_column_selector"
+				class="dropdown-menu dropdown-body-attached hold-on-click dropdown-checkboxes pull-right pec-datatables-column-selector">
+				{% set lastColumnGroupKey = null %}
+				{% set groupOpened = false %}
+				{% for columnGroup in table.toggleableColumns %}
+					{% set columns = columnGroup.columns %}
+					{% set columnGroupKey = columnGroup.label %}
+					{% set groupLabel = columnGroup.translation_domain is same as(false) ? columnGroup.label : columnGroup.label|trans({}, columnGroup.translation_domain) %}
+					{% if columnGroupKey is not same as(null) %}
+						<li class="dropdown-submenu">
+						<a href="javascript:;">
+							{{ groupLabel|raw }}
+						</a>
+						{% set groupOpened = true %}
+						<ul class="dropdown-menu pull-right pec-datatables-column-selector-group">
+					{% endif %}
+					{% for column in columns %}
+						{{ me.renderColumnToggler(table, column) }}
+					{% endfor %}
+					{% if columnGroupKey is not same as(null) %}
+						<li class="columnSelectorToggle">
+							{{ me.renderColumnToolbar('.pec-datatables-column-selector-group')}}
+						</li>
+					{% endif %}
+					{% if groupOpened %}
+						</ul></li>
+						{% set groupOpened = false %}
+					{% endif %}
+				{% endfor %}
+				<li class="columnSelectorToggle">
+					{{ me.renderColumnToolbar('.pec-datatables-column-selector')}}
+				</li>
+			</ul>
+		</div>
+	{% endif %}
+{%- endmacro columnSelector -%}
+
+{%- macro renderColumnToolbar(scope) -%}
+	{% import 'PecKeenAdminThemeBundle::macros.html.twig' as theming %}
+	<a class="columnSelectorToggleBtn" data-toggle-mode="check" data-toggle-scope="{{ scope }}"
+	   href="javascript:void(0);" title="{{ 'stinger_soft_datatables.columns.check.all'|trans({}, 'StingerSoftDatatableBundle') }}" data-toggle="tooltip" data-container=".pec-datatables-column-selector">
+		{{ theming.checkBox(true) }}
+	</a>
+	<a class="columnSelectorToggleBtn" data-toggle-mode="uncheck" data-toggle-scope="{{ scope }}"
+	   href="javascript:void(0);" title="{{ 'stinger_soft_datatables.columns.check.none'|trans({}, 'StingerSoftDatatableBundle') }}" data-toggle="tooltip" data-container=".pec-datatables-column-selector">
+		{{ theming.checkBox(false) }}
+	</a>
+	<a class="columnSelectorToggleBtn" data-toggle-mode="reset" data-toggle-scope="{{ scope }}"
+	   title="{{ 'stinger_soft_datatables.columns.reset'|trans({}, 'StingerSoftDatatableBundle') }}" data-toggle="tooltip" data-container=".pec-datatables-column-selector">
+		<i class="fa fa-fw fa-undo"></i>
+	</a>
+{%- endmacro renderColumnToolbar -%}
+
+{%- macro renderColumnToggler(table, column) -%}
+	{% set disabled = column.vars.toggleable is same as(false) %}
+	<li {% if disabled %}class="disabled"{% endif %}>
+		<div class="clearfix columnSelectorContent {% if disabled %}class="disabled"{% endif %}">
+		{% set inputId = table.vars.id ~ '_column_' ~ column.path %}
+		<label class="columnSelectorLabel mt-checkbox mt-checkbox-outline" for="{{ inputId }}">
+			<input id="{{ inputId }}" class="column-toggle-vis columnSelectorSpanControl" type="checkbox"
+				   data-column-selector='{{ column.path }}:name'
+				   {% if column.vars.visible %}checked="checked"{% endif %}
+					{% if disabled %}disabled="disabled"{% endif %}>
+			<span></span>
+			<div class="columnSelectorSpanLabel">
+				{% set label = column.vars.label is empty ? column.path|humanize : column.vars.label %}
+				{% set translated_label = column.vars.translation_domain is not same as(false) ? label|trans({}, column.vars.translation_domain) : label %}
+				{{ translated_label|raw }}
+			</div>
+		</label>
+		</div>
+	</li>
+{%- endmacro renderColumnToggler -%}
+
+{%- macro pageLength(table) -%}
+	{% if table.vars.lengthMenu %}
+		<select class="form-control input-sm" id="{{ table.vars.id }}_length">
+			{% for itemCount in table.vars.lengthMenu %}
+				{% set itemLabel = itemCount %}
+				{% if itemCount < 0 %}
+					{% set itemLabel = 'stinger_soft_datatables.pageLength.all'|trans({}, 'StingerSoftDatatableBundle') %}
+				{% endif %}
+				<option value="{{ itemCount }}"{% if table.vars.pageLength == itemCount %}selected="selected"{% endif %}>{{ itemLabel }}</option>
+			{% endfor %}
+		</select>
+	{% endif %}
+{%- endmacro pageLength -%}

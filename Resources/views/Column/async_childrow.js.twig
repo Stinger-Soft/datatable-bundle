@@ -1,0 +1,9 @@
+{% extends 'StingerSoftDatatableBundle:Column:column.js.twig' %}
+{% block data %}
+	"name": {{ column.path|json_encode|raw }},
+	"data": null,
+	"orderable": false,
+	"searchable": false,
+	"className": {{ column.vars.class_name|json_encode|raw }},
+	"visible": {{ column.vars.visible|json_encode|raw }}
+{% endblock %}

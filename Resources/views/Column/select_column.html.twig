@@ -1,0 +1,8 @@
+{% import 'StingerSoftDatatableBundle:Column:macros.html.twig' as input %}
+{% block select_column %}
+	{% if multiple %}
+		{{ input.checkBox(checked, idValue, formId, disabled, [path|replace({'.':'_'})]) }}
+	{% else %}
+		{{ input.radio(checked, idValue, formId, disabled, [path|replace({'.':'_'})]) }}
+	{% endif %}
+{% endblock select_column %}

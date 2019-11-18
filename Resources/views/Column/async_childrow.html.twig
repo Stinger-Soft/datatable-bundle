@@ -1,0 +1,9 @@
+{% trans_default_domain 'StingerSoftDatatableBundle' %}
+{% if visible %}
+<a class="table-childrow-expander" href="{{ url }}" data-refresh="{{ refresh|json_encode|raw }}"
+   data-toggle="tooltip"
+   title="{{ 'stinger_soft_datatables.details.collapsed'|trans }}"
+   data-container="body"
+   data-title-collapsed="{{ 'stinger_soft_datatables.details.collapsed'|trans }}"
+   data-title-expanded="{{ 'stinger_soft_datatables.details.expanded'|trans }}"><i class="far fa-plus-square"></i></a>
+{% endif %}

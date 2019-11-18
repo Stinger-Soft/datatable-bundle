@@ -1,0 +1,16 @@
+{% extends 'StingerSoftDatatableBundle:Filter:filter.json.twig' %}
+{% block additional_fields %}
+{% if filter.vars.exclude is not same as(null) %}
+	"exclude": {{ filter.vars.exclude|json_encode|raw }},
+	{% if filter.vars.exclude_label is not same as(null) %}
+		{% set excludeLabel = filter.vars.translation_domain is not same as(false) ? (filter.vars.exclude_label|trans({}, filter.vars.translation_domain )) : filter.vars.exclude_label %}
+		"exclude_label": {{ excludeLabel|json_encode|raw }},
+	{% endif %}
+{% endif %}
+{% if filter.vars.filter_delay is not same as(null) %}
+	"filter_delay": {{ filter.vars.filter_delay|json_encode|raw }},
+{% endif %}
+{% if filter.vars.style_class is not same as(null) %}
+	"style_class": {{ filter.vars.style_class|json_encode|raw }},
+{% endif %}
+{% endblock %}

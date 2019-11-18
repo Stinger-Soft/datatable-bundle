@@ -1,0 +1,20 @@
+{% if table.tableId is defined %}
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery('.yadcf-filter-date, .yadcf-filter-range-date')
+				.addClass('form-control')
+				.on('show', function() {
+					var $datePickers = jQuery('div#{{ table.tableId }}_filter_container').find('.datepicker');
+					if($datePickers.length > 1) {
+						$datePickers.first().remove();
+					}
+			});
+			jQuery('.yadcf-filter-range-date-seperator').text(' - ');
+		});
+	</script>
+	<style>
+		#{{ table.tableId }}_filter_container {
+			position: relative;
+		}
+	</style>
+{% endif %}

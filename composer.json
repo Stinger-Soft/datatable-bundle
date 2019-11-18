@@ -1,0 +1,59 @@
+{
+	"name": "stinger-soft/datatable-bundle",
+	"type": "symfony-bundle",
+	"description": "Datatable (http://www.datatables.net/) integration for symfony",
+	"keywords": [
+		"datatables",
+		"symfony"
+	],
+	"homepage": "http://www.stinger-soft.net",
+	"authors": [
+		{
+			"name": "Florian Meyer",
+			"email": "florian.meyer@stinger-soft.net",
+			"role": "Developer"
+		},
+		{
+			"name": "Oliver Kotte",
+			"email": "oliver.kotte@stinger-soft.net",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">7.0",
+		"ext-json": "*",
+		"ext-intl": "*",
+		"doctrine/dbal": "^2.6",
+		"doctrine/orm": "^2.6",
+		"knplabs/knp-paginator-bundle": "^4.0",
+		"stinger-soft/php-commons": "^1.1",
+		"symfony/framework-bundle": "^3.4|^4.0",
+		"symfony/options-resolver": "^3.4|^4.0",
+		"symfony/templating": "^3.4|^4.0",
+		"twig/twig": "^2.0"
+	},
+	"require-dev": {
+		"roave/security-advisories": "dev-master",
+		"phpunit/phpunit": "^5.0|^6.0"
+	},
+	"suggest": {
+		"npm-asset/ion-rangeslider": "To render range slider filter"
+	},
+	"autoload": {
+		"psr-4": {
+			"StingerSoft\\DatatableBundle\\": "src/StingerSoft/DatatableBundle"
+		}
+	},
+	"config": {
+		"discard-changes": true,
+		"sort-packages": true
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.0.x-dev",
+			"dev-develop": "1.1.x-dev"
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}

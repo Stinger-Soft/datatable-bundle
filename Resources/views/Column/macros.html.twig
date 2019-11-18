@@ -1,0 +1,28 @@
+{%- macro renderYesNoState(value, vars) -%}
+	{% if vars.display_type == constant('Pec\\Bundle\\DatatableBundle\\Column\\YesNoColumnType::DISPLAY_ICON_ONLY') %}
+		<i class="{{ value ? vars.yes_icon|raw : vars.no_icon|raw }}"></i>
+	{% else %}
+		{% set labelTranslationDomain = vars.label_translation_domain %}
+		{% set yesValue = labelTranslationDomain is same as(false) ? vars.yes_label : (vars.yes_label|trans({}, labelTranslationDomain)) %}
+		{% set noValue = labelTranslationDomain is same as(false) ? vars.no_label : (vars.no_label|trans({}, labelTranslationDomain)) %}
+		{% if vars.display_type == constant('Pec\\Bundle\\DatatableBundle\\Column\\YesNoColumnType::DISPLAY_LABEL_ONLY') %}
+			{{ value ? yesValue|raw : noValue|raw }}
+		{% elseif vars.display_type == constant('Pec\\Bundle\\DatatableBundle\\Column\\YesNoColumnType::DISPLAY_ICON_WITH_LABEL') %}
+			<i class="{{ value ? vars.yes_icon|raw : vars.no_icon|raw }}"></i> {{ value ? yesValue|raw : noValue|raw }}
+		{% elseif vars.display_type == constant('Pec\\Bundle\\DatatableBundle\\Column\\YesNoColumnType::DISPLAY_ICON_WITH_TOOLTIP') %}
+			<span title="{{ value ? yesValue|raw : noValue|raw }}" data-toggle="tooltip" data-container="body"><i class="{{ value ? vars.yes_icon|raw : vars.no_icon|raw }}"></i></span>
+		{% endif %}
+	{% endif %}
+{%- endmacro -%}
+
+{%- macro checkBox(checked, idValue, formId, disabled, classes, label) -%}{% spaceless %}
+	{% set actualClasses = classes is defined and classes ? classes : [] %}
+	{% set actualClasses = actualClasses|merge(['pec-datatable-row-select-trigger mt-checkbox', 'mt-checkbox-outline']) %}
+	<label class="{{ actualClasses|join(' ') }}"><input type="checkbox" {% if checked %} checked="checked"{% endif %} data-id-value="{{ idValue|default('') }}" data-form-id="{{ formId|default('') }}" {% if disabled is defined and disabled %} disabled="disabled"{% endif %}><span></span>{% if label %} {{ label }}{% endif %}</label>
+{% endspaceless %}{%- endmacro -%}
+
+{%- macro radio(checked, idValue, formId, disabled, classes, label) -%}{% spaceless %}
+	{% set actualClasses = classes is defined and classes ? classes : [] %}
+	{% set actualClasses = actualClasses|merge(['pec-datatable-row-select-trigger mt-radio', 'mt-radio-outline']) %}
+	<label class="{{ actualClasses|join(' ') }}"><input type="radio" {% if checked %} checked="checked"{% endif %} data-id-value="{{ idValue|default('') }}" data-form-id="{{ formId|default('') }}" {% if disabled is defined and disabled %} disabled="disabled"{% endif %}><span></span>{% if label %} {{ label }}{% endif %}</label>
+{% endspaceless %}{%- endmacro -%}

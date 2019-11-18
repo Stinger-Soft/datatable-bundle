@@ -1,0 +1,9 @@
+# IDE specific stuff
+/.idea
+
+# composer during development
+composer.lock
+
+# symfony stuff
+/vendor
+/node_modules/
