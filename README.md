@@ -3305,19 +3305,3 @@ The parameters passed to the delegate function are:
 + `$item` (object) which is the object returned by the underlying table query builder (i.e. the object of the row to render the column for).
 + `$path` (string) is columns key or the objects path to retrieve the value from.
 + `$options` (string) is the array containing all options for the column, such as `translation_domain` for instance.
-
-### Filter Types
-
-#### Filter Type Options
-
-## Requirements
-* PHP >= 5.6
-* pec-resources/datatables >= 1.10.13
-* pec-resources/datatables-scroller >= 1.4.2
-* stinger/moment-js-bundle >= 2.10
-* symfony/framework-bundle >= 2.7
-
-## License
-This file is part of the PEC Platform Data Table Bundle. For the full copyright and license information, please view the LICENSE file that was distributed with this bundle. 
-
-(c) PEC project engineers & consultants
